@@ -1,0 +1,4 @@
+INDEX VERSION 1.132+C:\Users\umutcan.ceylan\OneDrive - sabancidx.com\Desktop\School\CENG435\Assignments\Assignment0\.metadata\.plugins\org.eclipse.jdt.core
+2076604830.index
+1865797976.index
+2229600713.index

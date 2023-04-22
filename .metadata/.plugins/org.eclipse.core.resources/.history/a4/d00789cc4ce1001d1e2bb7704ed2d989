@@ -1,0 +1,10 @@
+/**
+ * 
+ */
+/**
+ * @author umutcan.ceylan
+ *
+ */
+module SimpleDBClients {
+	requires SimpleDBEngine;
+}
