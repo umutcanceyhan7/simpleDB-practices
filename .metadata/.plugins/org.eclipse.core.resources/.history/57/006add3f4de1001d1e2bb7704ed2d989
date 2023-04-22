@@ -1,0 +1,11 @@
+/**
+ * 
+ */
+/**
+ * @author umutcan.ceylan
+ *
+ */
+module SimpleDBEngine {
+	requires java.rmi;
+	requires java.sql;
+}
