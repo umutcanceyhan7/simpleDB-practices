@@ -1,4 +1,4 @@
-# simpleDB-practices
+# Database System Design And Implementation Practices
 This repository consists of practices about database system design and implementations. All of the practices will be done in SimpleDB.
 
 ## Changes via Pull Requests
