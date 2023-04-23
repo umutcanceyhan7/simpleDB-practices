@@ -1,1 +1,7 @@
-SimpleDBEngine/studentdb/student.tbl
+.metadata
+SimpleDBEngine/.settings
+SimpleDBClients/.settings
+*.classpath
+*.project
+SimpleDBClients/bin
+SimpleDBEngine/bin
