@@ -4,29 +4,32 @@ import simpledb.file.*;
 import simpledb.log.LogMgr;
 
 /**
- * An individual buffer. A databuffer wraps a page 
+ * An individual buffer. A databuffer wraps a page
  * and stores information about its status,
  * such as the associated disk block,
  * the number of times the buffer has been pinned,
  * whether its contents have been modified,
  * and if so, the id and lsn of the modifying transaction.
+ * 
  * @author Edward Sciore
  */
 public class Buffer {
    private FileMgr fm;
    private LogMgr lm;
+   private int id;
    private Page contents;
    private BlockId blk = null;
    private int pins = 0;
    private int txnum = -1;
    private int lsn = -1;
 
-   public Buffer(FileMgr fm, LogMgr lm) {
+   public Buffer(FileMgr fm, LogMgr lm, int id) {
       this.fm = fm;
       this.lm = lm;
+      this.id = id;
       contents = new Page(fm.blockSize());
    }
-   
+
    public Page contents() {
       return contents;
    }
@@ -34,6 +37,7 @@ public class Buffer {
    /**
     * Returns a reference to the disk block
     * allocated to the buffer.
+    * 
     * @return a reference to a disk block
     */
    public BlockId block() {
@@ -49,12 +53,13 @@ public class Buffer {
    /**
     * Return true if the buffer is currently pinned
     * (that is, if it has a nonzero pin count).
+    * 
     * @return true if the buffer is pinned
     */
    public boolean isPinned() {
       return pins > 0;
    }
-   
+
    public int modifyingTx() {
       return txnum;
    }
@@ -64,6 +69,7 @@ public class Buffer {
     * the contents of the buffer.
     * If the buffer was dirty, then its previous contents
     * are first written to disk.
+    * 
     * @param b a reference to the data block
     */
    void assignToBlock(BlockId b) {
@@ -72,7 +78,7 @@ public class Buffer {
       fm.read(blk, contents);
       pins = 0;
    }
-   
+
    /**
     * Write the buffer to its disk block if it is dirty.
     */
@@ -96,5 +102,9 @@ public class Buffer {
     */
    void unpin() {
       pins--;
+   }
+
+   int getId() {
+      return this.id;
    }
 }
