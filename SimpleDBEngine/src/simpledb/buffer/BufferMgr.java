@@ -114,7 +114,7 @@ public class BufferMgr {
       System.out.println("Unpinned Buffers in LRU order:");
       for (Buffer buffer : unpinnedBuffers) {
          if (!buffer.isPinned()) {
-            System.out.print(buffer.getId() + " " + buffer.block() + ", ");
+            System.out.print(buffer.getId() + " ");
          }
       }
       System.out.println();
@@ -128,7 +128,7 @@ public class BufferMgr {
     * Tries to pin a buffer to the specified block.
     * If there is already a buffer assigned to that block
     * then that buffer is used;
-    * otherwise, an unpinned buffer from the pool is chosen.
+    * otherwise, an unpinned buffer from the allocatedBuffers is chosen.
     * Returns a null value if there are no available buffers.
     * 
     * @param blk a reference to a disk block
@@ -136,22 +136,21 @@ public class BufferMgr {
     */
    private Buffer tryToPin(BlockId blk) {
       Buffer buff = allocatedBuffers.get(blk);
-      // Block already has a buffer in memory.
       if (buff != null) {
+         // We have the block in the memory we do not need the replace buffer
          if (!buff.isPinned()) { // Unpinned
             unpinnedBuffers.remove(buff);
-            buff.pin();
-         } else {
-            System.out
-                  .println(buff.getId() + " numbered buffer is already pinned so we can not pin buffer with the block"
-                        + blk.number() + ". You should wait until it becomes unpinned");
-         }
+         } 
+         // If it is unpinned remove the buffer from unpinnedBuffers and pin it
+         // Otherwise, increment its pin count
+         buff.pin();
          return buff;
       } else {
          buff = chooseUnpinnedBuffer();
          if (buff == null) {
             return null;
          }
+         // If there is unpinned allocated buffer use LRU strategy to replace it! 
          allocatedBuffers.remove(buff.block());
          buff.assignToBlock(blk);
          allocatedBuffers.put(blk, buff);
